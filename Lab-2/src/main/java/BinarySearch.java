@@ -15,7 +15,7 @@ public final class BinarySearch {
      * @return The index (0 based) where the element was found at, or -1
      */
     /*@
-      requires ()
+      requires (\exists )
       ensures
       also
 
@@ -33,7 +33,7 @@ public final class BinarySearch {
         }
 
         // Make sure the array is sorted.
-        if (!isSorted(array))
+        if (!Util.isSorted(array))
             throw new IllegalArgumentException(BinarySearch.class.getSimpleName() +
                     " argument array is not sorted");
 
@@ -52,29 +52,5 @@ public final class BinarySearch {
         return -1;
     }
 
-    /**
-     * Checks if the array is sorted.
-     *
-     * @param array Array to check
-     * @param <T> The Comparable type of the array.
-     * @return Whether or not the array is sorted
-     */
-    public static <T extends Comparable<? super T>> boolean isSorted(T[] array) {
-        if (array == null)
-            throw new IllegalArgumentException("Array cannot be null");
-
-        // Any empty or one element array is sorted.
-        if (array.length <= 1) return true;
-
-        // Make sure every element is equals to or less the latter element.
-        for (int i = 0; i < array.length - 1; ++i) {
-            // If we ever find a
-            if (array[i].compareTo(array[i +1 ]) > 1) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
 }
