@@ -11,8 +11,29 @@ public final class QuickSort {
      * @param array Array to sort.
      * @param <T> Comparable type that uses compareTo.
      */
+    /*@
+   r    requires array != null && array.length > 1
+        ensures (\forall int i; 0 <= i && i < array.length - 1;
+            array[i].compareTo(array[i+1]) < 1);
+        also
+        requires (\exists int i; 0 <= i && i < array.length;
+            array[i] == null);
+        signals_only NullPointerException
+        also
+        requires array == null
+        signals_only NullPointerException
+     @*/
     public static <T extends Comparable<? super T>> void sort(T[] array){
-        if (array == null || array.length <= 1) return;
+        if (array == null) throw new NullPointerException(QuickSort.class.getSimpleName()
+                + ".sort(): Null array argument.");
+        for (T elem: array)
+            if (elem == null)
+                throw new NullPointerException(
+                        QuickSort.class.getSimpleName() +
+                                ".sort(): Array cannot have null elements");
+
+        if (array.length <= 1) return;
+
         quickSort(array, 0, array.length);
     }
 

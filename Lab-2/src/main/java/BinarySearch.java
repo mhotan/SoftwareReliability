@@ -15,11 +15,34 @@ public final class BinarySearch {
      * @return The index (0 based) where the element was found at, or -1
      */
     /*@
-      requires (\exists )
-      ensures
-      also
-
-      @*/
+        requires array == null || key == null;
+        signals_only NullPointerException;
+        also
+        requires array != null && key != null &&
+            (\exists int i; 0 <= i && i < array.length;
+                array[i] == null);
+        signals_only NullPointerException;
+        requires array != null && key != null
+            && array.length > 1
+            && !(\forall int i; 0 <= i && i < array.length - 1;
+                array[i].compareTo(array[i+1]) < 1);
+        signals_only IllegalArgumentException;
+        also
+        requires array != null && key != null;
+            && (\forall int i; 0 <= i && i < array.length - 1;
+                array[i].compareTo(array[i+1]) < 1);
+            && (\exists int i; 0 <= i && i < array.length;
+                array[i] == key);
+        ensures \result != -1 && array[\result] == key;
+        also
+        requires array != null && key != null
+            && array.length > 1
+            && (\forall int i; 0 <= i && i < array.length - 1;
+                array[i].compareTo(array[i+1]) < 1)
+            && !(\exists int i; 0 <= i && i < array.length;
+                array[i] == key);
+        ensures \result == -1;
+     @*/
     public static <T extends Comparable<? super T>> int search(T[] array, T key) {
         if (array == null)
             throw new NullPointerException("argument array is null");
@@ -29,7 +52,7 @@ public final class BinarySearch {
         // Make sure every element is not null.
         for (T elem: array) {
             if (elem == null)
-                throw new IllegalArgumentException("All elements must not be null");
+                throw new NullPointerException("All elements must not be null");
         }
 
         // Make sure the array is sorted.

@@ -13,6 +13,27 @@ public final class MemberShip {
      * @param <T> Comparable type
      * @return Whether or not key is in array or not.
      */
+    /*@
+        requires array == null || key == null;
+        signals_only NullPointerException;
+        also
+        requires array != null && key != null &&
+            (\exists int i; 0 <= i && i < array.length;
+                array[i] == null);
+        signals_only NullPointerException;
+        also
+        requires array != null && key != null &&
+            !(\exists int i; 0 <= i && i < array.length; array[i] == null)
+            && !(\exists int i; 0 <= i && i < array.length;
+                array[i] == key);
+        ensures !\result;
+        also
+        requires array != null && key != null &&
+            !(\exists int i; 0 <= i && i < array.length; array[i] == null)
+            && (\exists int i; 0 <= i && i < array.length;
+                array[i] == key);
+        ensures \result;
+     @*/
     public static <T extends Comparable<? super T>> boolean isMemberUnSorted(T[] array, T key) {
         if (array == null)
             throw new NullPointerException(MemberShip.class.getSimpleName() + ".isMemberUnSorted() " +
@@ -36,6 +57,37 @@ public final class MemberShip {
      * @param <T> Comparable type
      * @return Whether or not key is in the array or not.
      */
+    /*@
+        requires array == null || key == null;
+        signals_only NullPointerException;
+        also
+        requires array != null && key != null &&
+            (\exists int i; 0 <= i && i < array.length;
+                array[i] == null);
+        signals_only NullPointerException;
+        also
+        requires array != null && key != null &&
+            !(\exists int i; 0 <= i && i < array.length; array[i] == null)
+            && !(\forall int i; 0 <= i && i < array.length - 1;
+                array[i].compareTo(array[i+1]) < 1);
+        signals_only IllegalArgumentException
+        also
+        requires array != null && key != null &&
+            !(\exists int i; 0 <= i && i < array.length; array[i] == null)
+            && (\forall int i; 0 <= i && i < array.length - 1;
+                array[i].compareTo(array[i+1]) < 1)
+            && !(\exists int i; 0 <= i && i < array.length;
+                array[i] == key);
+        ensures !\result;
+        also
+        requires array != null && key != null &&
+            !(\exists int i; 0 <= i && i < array.length; array[i] == null)
+            && (\forall int i; 0 <= i && i < array.length - 1;
+                array[i].compareTo(array[i+1]) < 1)
+            && (\exists int i; 0 <= i && i < array.length;
+                array[i] == key);
+        ensures \result;
+     @*/
     public static <T extends Comparable<? super T>> boolean isMemberSorted(T[] array, T key) {
         if (array == null)
             throw new NullPointerException(MemberShip.class.getSimpleName() + ".isMemberSorted() " +
