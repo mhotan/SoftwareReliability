@@ -1,3 +1,5 @@
+package search;
+
 /**
  * Generally utility class for this project.
  *

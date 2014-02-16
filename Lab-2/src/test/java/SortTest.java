@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * Created by mhotan_dev on 2/11/14.
  */
-public class QuickSortTest {
+public class SortTest {
 
     @Before
     public void setUp() throws Exception {

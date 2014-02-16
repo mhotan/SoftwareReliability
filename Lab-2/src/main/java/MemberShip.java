@@ -1,3 +1,8 @@
+import search.Searcher;
+import search.Util;
+import sort.Sorter;
+import testing.framework.TestCase;
+
 /**
  * Class that determines whether a given key is in an array.
  *
@@ -34,26 +39,21 @@ public final class MemberShip {
                 array[i] == key);
         ensures \result;
      @*/
-    public static <T extends Comparable<? super T>> boolean isMemberUnSorted(T[] array, T key) {
-        if (array == null)
-            throw new NullPointerException(MemberShip.class.getSimpleName() + ".isMemberUnSorted() " +
-                    "array cannot be null");
-        if (key == null)
-            throw new NullPointerException(MemberShip.class.getSimpleName() + ".isMemberUnSorted() " +
-                    "key cannot be null");
+    public static boolean isMemberUnSorted(TestCase c, Sorter sorter, Searcher searcher) {
+        assert c != null;
 
         // Quickly sort the array.
-        QuickSort.sort(array);
+        sorter.sort(c.getArray());
 
         // Return whether the index was found after doing search.
-        return isMemberSorted(array, key);
+        return (searcher.search(c.getArray(), c.getKey()) != -1);
     }
 
     /**
      * Checks whether the key is within the sorted array.
      *
-     * @param array Sorted array to search
-     * @param key Key to find in the sorted array
+     * @param c Test Case to use.
+     * @param searcher Key to find in the sorted array
      * @param <T> Comparable type
      * @return Whether or not key is in the array or not.
      */
@@ -88,20 +88,20 @@ public final class MemberShip {
                 array[i] == key);
         ensures \result;
      @*/
-    public static <T extends Comparable<? super T>> boolean isMemberSorted(T[] array, T key) {
-        if (array == null)
+    public static <T extends Comparable<? super T>> boolean isMemberSorted(TestCase c, Searcher searcher) {
+        if (c == null)
             throw new NullPointerException(MemberShip.class.getSimpleName() + ".isMemberSorted() " +
-                    "array cannot be null");
-        if (key == null)
+                    "Test Case cannot be null");
+        if (searcher == null)
             throw new NullPointerException(MemberShip.class.getSimpleName() + ".isMemberSorted() " +
-                    "key cannot be null");
+                    "Searcher cannot be null");
 
-        if (!Util.isSorted(array)) {
+        if (!Util.isSorted(c.getArray())) {
             throw new IllegalArgumentException(MemberShip.class.getSimpleName() + ".isMemberSorted() " +
                     "array must be sorted.");
         }
 
-        return (BinarySearch.search(array, key) != -1);
+        return (searcher.search(c.getArray(), c.getKey()) != -1);
     }
 
 }

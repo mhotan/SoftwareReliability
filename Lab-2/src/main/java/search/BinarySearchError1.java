@@ -1,9 +1,11 @@
+package search;
+
 /**
- * Self implementation of Binary Search.
+ * Implementation of Binary Search that introduces the error where the segmentation of the array is backwards.
  *
- * Created by Michael Hotan on 2/11/14.
+ * Created by mhotan_dev on 2/14/14.
  */
-public final class BinarySearch {
+public class BinarySearchError1 implements Searcher {
 
     /**
      * Searches the sorted array for a given key and returns the index of the location
@@ -43,7 +45,7 @@ public final class BinarySearch {
                 array[i] == key);
         ensures \result == -1;
      @*/
-    public static <T extends Comparable<? super T>> int search(T[] array, T key) {
+    public <T extends Comparable<? super T>> int search(T[] array, T key) {
         if (array == null)
             throw new NullPointerException("argument array is null");
         if (key == null)
@@ -57,17 +59,17 @@ public final class BinarySearch {
 
         // Make sure the array is sorted.
         if (!Util.isSorted(array))
-            throw new IllegalArgumentException(BinarySearch.class.getSimpleName() +
+            throw new IllegalArgumentException(getClass().getSimpleName() +
                     " argument array is not sorted");
 
         int lo = 0;
         int hi = array.length - 1;
-        while (lo <= hi) {
+        while (lo < hi) {
             // Key is in a[lo..hi] or not present.
             int mid = lo + (hi - lo) / 2;
-            if (key.compareTo(array[mid]) < 0)
+            if (key.compareTo(array[mid]) > 0)
                 hi = mid - 1;
-            else if (key.compareTo(array[mid]) > 0)
+            else if (key.compareTo(array[mid]) < 0)
                 lo = mid + 1;
             else
                 return mid;
@@ -75,5 +77,9 @@ public final class BinarySearch {
         return -1;
     }
 
+    @Override
+    public String getType() {
+        return "Search Error 1";
+    }
 
 }
